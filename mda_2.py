@@ -5,16 +5,21 @@ from PIL import Image
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import Qt
 
 toponym_to_find = ''
+sps = [0.00005, 0.0005, 0.005, 0.05, 0.5, 5, 50]
+now = [sps[2], 2]
 
 
 class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main_1.ui', self)
+        uic.loadUi('main_2.ui', self)
+        MyWidget.initUI(self)
 
-        global toponym_to_find
+    def initUI(self):
+        global toponym_to_find, now
         try:
             # toponym_to_find = self.line_edit.text()
             # print(toponym_to_find)
@@ -42,7 +47,7 @@ class MyWidget(QMainWindow):
             # Долгота и широта:
             toponym_longitude, toponym_lattitude = toponym_coodrinates.split(" ")
 
-            delta = "0.005"
+            delta = str(now[0])
 
             # Собираем параметры для запроса к StaticMapsAPI:
             map_params = {
@@ -58,10 +63,8 @@ class MyWidget(QMainWindow):
             with open('image.png', 'wb') as f:
                 f.write(b)
 
-            Image.open(BytesIO(b)).show()
             self.pixmap = QPixmap.fromImage(QImage('image.png'))
             self.image.setPixmap(self.pixmap)
-            print(self.image)
             # Создадим картинку
             # и тут же ее покажем встроенным просмотрщиком операционной системы
 
@@ -70,6 +73,17 @@ class MyWidget(QMainWindow):
 
         except Exception as e:
             self.label.setText('Error', e)
+
+    def keyPressEvent(self, event):
+        global now
+        if event.key() == Qt.Key_PageDown:
+            if now[1] <= 5:
+                now = [sps[now[1] + 1], now[1] + 1]
+                MyWidget.initUI(self)
+        elif event.key() == Qt.Key_PageUp:
+            if 1 <= now[1]:
+                now = [sps[now[1] - 1], now[1] - 1]
+                MyWidget.initUI(self)
 
 
 if __name__ == '__main__':
