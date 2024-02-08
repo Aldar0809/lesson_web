@@ -3,10 +3,15 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
-@app.route('/<prof>')
+@app.route('/<title>')
+@app.route('/index/<title>')
+def index(title):
+    return render_template('base.html', title=title)
+
+
 @app.route('/training/<prof>')
 def index(prof):
-    return render_template('base.html', job=prof)
+    return render_template('train.html', job=prof)
 
 
 if __name__ == '__main__':
