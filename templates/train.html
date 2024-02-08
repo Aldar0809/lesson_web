@@ -23,10 +23,10 @@
         <h2 align="center">Научные симуляторы</h2>
     {% set user_list = ['инженер', 'строитель'] %}
     {% for i in user_list if i in job %}
-        <img src="static/img/sci.png"
+        <img src="../static/img/sci.png"
              alt="здесь должна была быть картинка, но не нашлась">
     {% else %}
-        <img src="static/img/ing.png"
+        <img src="../static/img/ing.png"
              alt="здесь должна была быть картинка, но не нашлась">
     {% endfor %}
     {% endblock %}

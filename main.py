@@ -10,7 +10,7 @@ def index(title):
 
 
 @app.route('/training/<prof>')
-def index(prof):
+def profes(prof):
     return render_template('train.html', job=prof)
 
 
