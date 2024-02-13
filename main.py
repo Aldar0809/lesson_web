@@ -2,15 +2,36 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/list_prof/<string:list_type>')
-def list_prof(list_type):
-    professions = ["Engineer", "Doctor", "Astronaut", "Scientist", "Geologist"]
-    if list_type == 'ol':
-        return render_template('list.html', professions=professions, list_type='ol')
-    elif list_type == 'ul':
-        return render_template('list.html', professions=professions, list_type='ul')
-    else:
-        return "Invalid parameter. Please use 'ol' for ordered list or 'ul' for unordered list."
 
-if __name__ == "__main__":
-    app.run(port=8000, host='147.45.77.43')
+@app.route('/answer')
+def answer():
+    data = {
+        'title': 'Ответ',
+        'surname': 'Иванов',
+        'name': 'Иван',
+        'education': 'Высшее',
+        'profession': 'Инженер',
+        'sex': 'Мужской',
+        'motivation': 'Хочу исследовать Марс',
+        'ready': 'Да'
+    }
+    return render_template('auto_answer.html', **data)
+
+
+@app.route('/auto_answer')
+def auto_answer():
+    data = {
+        'title': 'Автоответ',
+        'surname': 'Петров',
+        'name': 'Петр',
+        'education': 'Среднее',
+        'profession': 'Рабочий',
+        'sex': 'Мужской',
+        'motivation': 'Хочу заработать деньги',
+        'ready': 'Нет'
+    }
+    return render_template('auto_answer.html', **data)
+
+
+if __name__ == '__main__':
+    app.run()
